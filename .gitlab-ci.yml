@@ -13,5 +13,5 @@ fuzzrunner:
   script:
     # An example fuzzer command. Note the url is DIFFERENT than XAMPP example (no /dvwa).
     # Remove whatever you need to.
-    - python3 main.py --http://127.0.0.1
+    - python3 main.py http://127.0.0.1
   stage: test
