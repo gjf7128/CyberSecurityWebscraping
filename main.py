@@ -61,4 +61,5 @@ def main():
 
 main()
 
-# to test on my own machine: discover http://127.0.0.1 --custom-auth=dvwa
+# to test on my own machine when prompted by command line: discover http://127.0.0.1 --custom-auth=dvwa
+# to test on my machine when giving url as a positional arg: python main.py --deliverable0 http://127.0.0.1
