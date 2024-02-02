@@ -8,6 +8,7 @@ before_script:
   - service mysql start
   - echo '[+] Starting apache'
   - service apache2 start
+  - pip3 install MechanicalSoup
 fuzzrunner:
   script:
     # An example fuzzer command. Note the url is DIFFERENT than XAMPP example (no /dvwa).
