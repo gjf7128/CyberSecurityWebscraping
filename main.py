@@ -1,4 +1,5 @@
 import mechanicalsoup
+import argparse
 
 def custom_auth_dvwa(user_provided_url):
     browser = mechanicalsoup.StatefulBrowser(user_agent='MechanicalSoup')
@@ -26,7 +27,7 @@ def custom_auth_dvwa(user_provided_url):
     browser.open_relative(dvwa_home_page)
     print(browser.page)
 
-def cli():
+def cli(args = None):
     print("[discover | test] url OPTIONS\n\n"
           "COMMANDS:\n"
           "\tdiscover  Output a comprehensive, human-readable list of all discovered inputs to the system. Techniques include both crawling and guessing.\n"
@@ -35,18 +36,23 @@ def cli():
           "\tOptions can be given in any order.\n\n"
           "\t--custom-auth=dvwa  Signal that the fuzzer should use hard-coded authentication for Damn Vulnerable Web Application.\n\n"
           "MORE TO COME IN LATER EDITIONS!")
-    # Currently only supports: discover <url> --custom-auth=dvwa
-    # Will need to teach myself argparser in future submissions.
-    cli_input = input()
-    cli_input_list = cli_input.split()
-    if cli_input_list[2] == '--custom-auth=dvwa':
-        custom_auth_dvwa(cli_input_list[1])
+    # if the user is running main.py on their own (Not the CI)
+    if args is None:
+        cli_input = input()
+        cli_input_list = cli_input.split()
+        if cli_input_list[2] == '--custom-auth=dvwa':
+            custom_auth_dvwa(cli_input_list[1])
+    else:
+        custom_auth_dvwa(args)
 
 
 
 
 def main():
-    cli()
+    parser = argparse.ArgumentParser(description='Fuzz me harder')
+    parser.add_argument('deliverable0', help='hardcoded deliverable 0')
+    args = parser.parse_args()
+    cli(args.deliverable0)
 
 
 
