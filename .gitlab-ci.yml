@@ -1,0 +1,16 @@
+image:
+  name: andymeneely/swen331fuzzer # don't change this
+  entrypoint: [""]  # don't change this
+before_script:
+  # don't change these either
+  - chown -R mysql:mysql /var/lib/mysql /var/run/mysqld
+  - echo '[+] Starting mysql...'
+  - service mysql start
+  - echo '[+] Starting apache'
+  - service apache2 start
+fuzzrunner:
+  script:
+    # An example fuzzer command. Note the url is DIFFERENT than XAMPP example (no /dvwa).
+    # Remove whatever you need to.
+    - python3 main.py
+  stage: test
