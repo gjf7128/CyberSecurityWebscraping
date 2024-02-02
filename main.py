@@ -4,6 +4,7 @@ import argparse
 def custom_auth_dvwa(user_provided_url):
     browser = mechanicalsoup.StatefulBrowser(user_agent='MechanicalSoup')
     dvwa_setup_page = user_provided_url + "/dvwa/setup.php"
+    print(dvwa_setup_page)
     browser.open(dvwa_setup_page)
     print(browser.page)
     browser.select_form(selector='form[action="#"]')
