@@ -51,7 +51,7 @@ def cli(args = None):
 
 def main():
     parser = argparse.ArgumentParser(description='Fuzz me harder')
-    parser.add_argument('deliverable0', help='hardcoded deliverable 0')
+    parser.add_argument('deliverable0', type=str, help='hardcoded deliverable 0')
     args = parser.parse_args()
     cli(args.deliverable0)
 
