@@ -43,6 +43,7 @@ def cli(args = None):
         if cli_input_list[2] == '--custom-auth=dvwa':
             custom_auth_dvwa(cli_input_list[1])
     else:
+        print(args)
         custom_auth_dvwa(args)
 
 
