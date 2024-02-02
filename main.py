@@ -6,7 +6,6 @@ def custom_auth_dvwa(user_provided_url):
     dvwa_setup_page = user_provided_url + "/dvwa/setup.php"
     print(dvwa_setup_page)
     browser.open(dvwa_setup_page)
-    print(browser.page)
     browser.select_form(selector='form[action="#"]')
     browser.submit_selected()
 
@@ -45,7 +44,6 @@ def cli(args = None):
         if cli_input_list[2] == '--custom-auth=dvwa':
             custom_auth_dvwa(cli_input_list[1])
     else:
-        print(args)
         custom_auth_dvwa(args)
 
 
