@@ -29,6 +29,22 @@ def custom_auth_dvwa(user_provided_url):
     print(browser.page)
 
 def cli(args = None):
+    # if the user is running main.py without trying to pass args... Might scrap this
+    if args is None:
+        cli_input = input()
+        cli_input_list = cli_input.split()
+        if cli_input_list[2] == '--custom-auth=dvwa':
+            custom_auth_dvwa(cli_input_list[1])
+    else:
+        if args.discovertest is not None and args.url is not None:
+            url = args.url
+            if args.custom_auth == "dvwa":
+                custom_auth_dvwa(url)
+
+
+
+
+def main():
     print("[discover | test] url OPTIONS\n\n"
           "COMMANDS:\n"
           "\tdiscover  Output a comprehensive, human-readable list of all discovered inputs to the system. Techniques include both crawling and guessing.\n"
@@ -37,23 +53,13 @@ def cli(args = None):
           "\tOptions can be given in any order.\n\n"
           "\t--custom-auth=dvwa  Signal that the fuzzer should use hard-coded authentication for Damn Vulnerable Web Application.\n\n"
           "MORE TO COME IN LATER EDITIONS!")
-    # if the user is running main.py on their own (Not the CI)
-    if args is None:
-        cli_input = input()
-        cli_input_list = cli_input.split()
-        if cli_input_list[2] == '--custom-auth=dvwa':
-            custom_auth_dvwa(cli_input_list[1])
-    else:
-        custom_auth_dvwa(args)
-
-
-
-
-def main():
     parser = argparse.ArgumentParser(description='Fuzz me harder')
-    parser.add_argument('--deliverable0', type=str, help='hardcoded deliverable 0')
+    parser.add_argument("discovertest", help="Expects either: discover or test")
+    parser.add_argument("url", help="The url we are discovering or testing")
+    parser.add_argument("--custom-auth", help="hardcoded deliverable 0")
+    parser.add_argument("--common-words", help="try using --common-words=mywords.txt")
     args = parser.parse_args()
-    cli(args.deliverable0)
+    cli(args)
 
 
 
