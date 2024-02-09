@@ -54,11 +54,40 @@ def cli(args=None):
 def page_discovery(args):
     browser = mechanicalsoup.StatefulBrowser(user_agent='MechanicalSoup', raise_on_404=True)
     pages_found = page_guessing(args, browser)
-    print(str(len(pages_found)) + " pages guessed and found\n")
-    pages_found.append(args.url)
-    for pages in pages_found:
-        print(pages)
-        # LEFT OFF HERE
+    print(str(len(pages_found)) + " pages guessed and found :\n")
+    pages_found.insert(0, args.url)
+    links_confirmed = []
+    for page in pages_found:
+        print(page)
+        links_confirmed_inner = link_crawling(page, browser)
+        links_confirmed.append(links_confirmed_inner)
+        print("\n")
+
+
+def link_crawling(page, browser):
+    # Holds list of url's/pages confirmed to exist.
+    pages_crawled_to = []
+
+    browser.open(page)
+    browser.list_links()
+
+    # I spent waaaaaaay too long trying to teach myself RegEx to avoid going off site when link crawling
+    # spent nearly 2 hours on this.  You have to be a 4D chess master to learn RegEx.  My brain is fried.
+    # Alas, despite my efforts I have failed to construct a RegEx that avoids going off site.
+    # I should have just bit the bullet on this part and not wasted so much time.
+    links_on_page = browser.links(url_regex="^(?:htt(?:ps|p)://www.)*.")
+    print(links_on_page)
+
+    for link in links_on_page:
+        try:
+            browser.follow_link(link)
+            pages_crawled_to.append(link)
+        except LinkNotFoundError:
+            print("attempted to visit link but link not found")
+
+    return pages_crawled_to
+
+
 
 
 def page_guessing(args, browser):
@@ -69,16 +98,27 @@ def page_guessing(args, browser):
     words_to_guess = f.readline().split()
     f.close()
 
-    #extracting a list of extensions
-    f = open(args.extensions, "r")
-    extensions_to_guess = f.readline().split()
-    f.close()
-    
-    print("Now Guessing Pages...\n")
-    for word in words_to_guess:
-        page_name = args.url + "/" + word
-        for extension in extensions_to_guess:
-            guessed_url = page_name + "." + extension
+    if args.extensions is not None:
+        # extracting a list of extensions
+        f = open(args.extensions, "r")
+        extensions_to_guess = f.readline().split()
+        f.close()
+
+        print("Now Guessing Pages...\n")
+        for word in words_to_guess:
+            page_name = args.url + "/" + word
+            for extension in extensions_to_guess:
+                guessed_url = page_name + "." + extension
+                try:
+                    browser.open(guessed_url)
+                    pages_found.append(guessed_url)
+                except LinkNotFoundError:
+                    print("guess: " + guessed_url + " failed")
+    else:
+        print("Now Guessing Pages...\n")
+        for word in words_to_guess:
+            page_name = args.url + "/" + word
+            guessed_url = page_name + ".php"
             try:
                 browser.open(guessed_url)
                 pages_found.append(guessed_url)
