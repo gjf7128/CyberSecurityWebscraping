@@ -1,5 +1,12 @@
 # fuzzer deliverable 0:
 
+## Fuzzer part 2:  
+Not even going to bother checking if the ci runs because it never does  
+I managed to get everything other than --sensitive programmed  
+  
+This should work with any URL, but since dvwa is our main test env, i recommend using --custom-auth=dvwa  
+so that the security is lowered and you'll get to see results.  I was using the following to test:  
+python main.py test http://127.0.0.1/dvwa/vulnerabilities/brute/ --custom-auth=dvwa --vectors=vectors.txt --sanitized-chars=sanitized.txt --slow=100 --response=yes
 
 
 ## Getting started

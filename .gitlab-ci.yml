@@ -13,6 +13,5 @@ fuzzrunner:
   script:
     # An example fuzzer command. Note the url is DIFFERENT than XAMPP example (no /dvwa).
     # Remove whatever you need to.
-    - python3 main.py discover http:localhost --custom-auth=dvwa
-    - python3 python main.py discover http://localhost/fuzzer-tests --common-words=mywords.txt --extension=extensions.txt
+    - python3 main.py test http://127.0.0.1/dvwa/vulnerabilities/brute/ --custom-auth=dvwa --vectors=vectors.txt --sanitized-chars=sanitized.txt --slow=100 --response=yes
   stage: test
